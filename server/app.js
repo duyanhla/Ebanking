@@ -19,11 +19,6 @@ app.use(cors());
 // app.use(express.static(__dirname + "./../client"));
 app.use('/user', userCtrl);
 app.use('/card', verifyAccessToken, cardCtrl);
-app.get('/captcha', function(req,res){
-    res.sendFile('captcha.html', {
-        root: __dirname + "./../client"
-   });
-});
 
 var PORT = process.env.PORT || 3000;
 

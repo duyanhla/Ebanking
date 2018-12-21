@@ -6,6 +6,7 @@ var userRepo = require('../repos/userRepo'),
 
 var router = express.Router();
 
+// add user
 router.post('/', (req, res) => {
     userRepo.allUser().then(usernames => {
         if (usernames.some(u => u.Username === req.body.Username)) {
@@ -28,10 +29,10 @@ router.post('/', (req, res) => {
     });
 });
 
+// verify captcha
 router.post('/captcha', (req, res) => {
     var secret = '6LcBUoEUAAAAAOVVcSWWgnclx3SOd15iWcoj2-Yd';
-    var captcha_response = req.body['g-recaptcha-response'];
-
+    var captcha_response = req.body['g_recaptcha_response'];
     var url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${captcha_response}`;
     axios.post(url, {
             // secret: _secret,
@@ -49,6 +50,7 @@ router.post('/captcha', (req, res) => {
         });
 });
 
+// login
 router.post('/login', (req, res) => {
     userRepo.login(req.body)
         .then(userObj => {
@@ -84,6 +86,7 @@ router.post('/login', (req, res) => {
         });
 });
 
+// refresh token
 router.post('/renew-token', (req, res) => {
     var rToken = req.body.refreshToken;
     authRepo.verifyRefreshToken(rToken)
@@ -117,6 +120,7 @@ router.post('/renew-token', (req, res) => {
         });
 });
 
+// logout
 router.post('/logout', authRepo.verifyAccessToken, (req, res) => {
     var user = req.token_payload.user;
     authRepo.deleteRefreshToken(user.Id)
@@ -130,11 +134,6 @@ router.post('/logout', authRepo.verifyAccessToken, (req, res) => {
             res.statusCode = 500;
             res.end('View error log on console.');
         });
-});
-
-router.post('/check', authRepo.verifyAccessToken, (req, res) => {
-    res.statusCode = 200;
-    res.end();
 });
 
 module.exports = router;

@@ -7,7 +7,7 @@ var genOtp = require('otp-generator');
 
 var router = express.Router();
 
-
+// add card
 router.post('/', (req, res) => {
     var user = req.token_payload.user;
     cardRepo.addCard(user.Id)
@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
         });
 });
 
+// get all card
 router.get('/me', (req, res) => {
     var uid = req.token_payload.user.Id;
     cardRepo.cardByUser(uid).then(cards => {
@@ -34,8 +35,9 @@ router.get('/me', (req, res) => {
     });
 });
 
-router.post('/:cardId/close', (req, res) => {
-    var cardId = req.query.cardId;
+// close card
+router.post('/close', (req, res) => {
+    var cardId = req.body.cardId;
     cardRepo.closeCard(cardId).then(cards => {
         res.statusCode = 200;
         res.json(cards);
