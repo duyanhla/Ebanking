@@ -22,15 +22,21 @@ export default {
     Footer,
     FooterBottom
   },
-  created: function() {
-    this.$http.interceptors.response.use(undefined, function(err) {
-      return new Promise(function(resolve, reject) {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch("logout");
-        }
-        throw err;
-      });
-    });
-  }
+  // created: function () {
+    // this.$http.interceptors.request.use((config) => {
+    //   let originalRequest = config;
+    //   if (supports.checkExpireToken() === false && config.url.indexOf("captcha") == -1) {
+    //     console.log('a')
+    //     return store.dispatch("renew_token").then((token) => {
+    //       console.log(token);
+    //       return Promise.resolve(originalRequest);
+    //     });
+    //   }
+    //   return config;
+    // }, (err) => {
+    //   console.log(err)
+    //   return Promise.reject(err);
+    // });
+  // }
 };
 </script>

@@ -8,8 +8,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    status: "",
-    token: localStorage.getItem("token") || ""
+    status: "", // status
+    token: localStorage.getItem("token") || "" // token
   },
   mutations: {
     auth_request(state) {
@@ -28,27 +28,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    check({ dispatch, commit }) {
-      return new Promise((resolve, reject) => {
-        commit("auth_request");
-        axios({
-          url: "http://localhost:3000/user/check",
-          data: this.state.token,
-          method: "POST"
-        })
-          .then(res => {
-            resolve(res);
-          })
-          .catch(err => {
-            commit("auth_error");
-            if (err.response.status === 401) {
-              dispatch("renew_token");
-            } else {
-              dispatch("logout");
-            }
-          });
-      });
-    },
+    // refresh token
     renew_token({ dispatch, commit }) {
       return new Promise((resolve, reject) => {
         commit("auth_request");
@@ -57,9 +37,7 @@ export default new Vuex.Store({
           url: "http://localhost:3000/user/renew-token",
           data: { refreshToken: refreshToken },
           method: "POST"
-        })
-          .then(res => {
-            console.log(res);
+        }).then(res => {
             const token = res.data.access_token;
             localStorage.setItem("token", token);
             axios.defaults.headers.common["x-access-token"] = token;
@@ -72,6 +50,27 @@ export default new Vuex.Store({
           });
       });
     },
+    // verify recaptcha
+    recaptcha({commit}, g_recaptcha_response) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        axios({
+          url: "http://localhost:3000/user/captcha",
+          data: g_recaptcha_response,
+          method: "POST"
+        })
+          .then(res => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch(err => {
+            commit("auth_error");
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+    // login
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit("auth_request");
@@ -97,6 +96,7 @@ export default new Vuex.Store({
           });
       });
     },
+    // logout
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit("logout");
@@ -123,9 +123,11 @@ export default new Vuex.Store({
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     currentUser: state => {
+      // get user by decoding token
       const decodedToken = state.token && jwtDecode(state.token);
       if (decodedToken) {
         const currentTime = new Date().getTime() / 1000;
+        // check token expire
         if (currentTime < decodedToken.exp) {
           return decodedToken;
         } else {

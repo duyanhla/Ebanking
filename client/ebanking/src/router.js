@@ -3,7 +3,8 @@ import store from "./store.js";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
-import About from "./views/About.vue";
+import Card from "./views/Card.vue";
+import History from "./views/History.vue";
 
 Vue.use(Router);
 
@@ -28,37 +29,55 @@ const router = new Router({
       }
     },
     {
-      path: "/about",
-      name: "about",
-      component: About,
+      path: "/history",
+      name: "history",
+      component: History,
       meta: {
         requiresAuth: true,
-        title: "About"
+        title: "Lịch sử giao dịch"
+      }
+    },
+    {
+      path: "/card",
+      name: "card",
+      component: Card,
+      meta: {
+        requiresAuth: true,
+        title: "Danh sách tài khoản"
       }
     }
   ]
 });
 
+// action before access page
 router.beforeEach((to, from, next) => {
-  // if (store.getters.isLoggedIn) {
-  //   store.dispatch("check")
-  //   .then(res => console.log(res))
-  //   .catch(err => console.log(err));
-  // }
-  if (store.getters.isLoggedIn && to.name == "login") {
-    // no need to go to login page, if user is already logged in - redirect
-    return router.push({ name: "home" });
+  if (store.getters.isLoggedIn) {
+    store.dispatch("renew_token");
+    // if (store.getters.currentUser == null) {
+    //   store.dispatch("renew_token");
+    // }
+    // prevent access login page again while authentication successful
+    if (to.name == "login") {
+      // no need to go to login page, if user is already logged in - redirect
+      return router.push({ name: "home" });
+    }
   }
+  // page requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const loginpath = window.location.pathname;
+    // check login
     if (store.getters.isLoggedIn) {
+      // set title
       document.title = to.meta.title;
+      // go to next
       next();
     } else {
-      next("/login", { from: loginpath });
+      // require login again
+      next("/login");
     }
   } else {
+    // set title
     document.title = to.meta.title;
+    //go to next
     next();
   }
 });
