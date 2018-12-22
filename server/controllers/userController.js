@@ -18,7 +18,9 @@ router.post('/', (req, res) => {
             userRepo.addUser(req.body)
                 .then(insertId => {
                     res.statusCode = 201;
-                    res.json(req.body);
+                    data = req.body;
+                    data.Id = insertId;
+                    res.json(data);
                 })
                 .catch(err => {
                     console.log(err);
@@ -134,6 +136,18 @@ router.post('/logout', authRepo.verifyAccessToken, (req, res) => {
             res.statusCode = 500;
             res.end('View error log on console.');
         });
+});
+
+router.get('/all', [authRepo.verifyAccessToken, authRepo.verifyAdmin], (req, res) => {
+    userRepo.allUser().then(data => {
+        res.statusCode = 200;
+        res.json(data);
+        console.log(data);
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    })
 });
 
 module.exports = router;

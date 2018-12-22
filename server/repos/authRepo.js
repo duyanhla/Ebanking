@@ -5,9 +5,7 @@ var randtoken = require('rand-token'),
 var db = require('../db/db'),
     opts = require('../db/opts');
 
-//
-// acccess-token
-
+// generate acccess-token
 exports.generateAccessToken = userObj => {
     var payload = {
         user: userObj,
@@ -73,4 +71,15 @@ exports.verifyRefreshToken = refreshToken => {
 exports.deleteRefreshToken = id => {
     var sql = `delete from userRefreshTokenExt where userID = ${id}`;
     return db.delete(sql);
+}
+
+exports.verifyAdmin = (req, res, next) => {
+    if (req.token_payload.user.Permission === 1) {
+        next();
+    } else {
+        res.statusCode = 401;
+        res.json({
+            msg: 'Access denied'
+        });
+    }
 }
