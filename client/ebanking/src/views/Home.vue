@@ -4,10 +4,10 @@
 
 <script>
 // @ is an alias to /src
-import Intro from "@/components/Intro.vue";
+import Intro from '@/components/Intro.vue';
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     Intro
   }

@@ -7,8 +7,8 @@ export function getCard() {
     //     store.dispatch('renew_token');
     //     return new Promise((resolve, reject) => {
     //         axios({
-    //             url: "http://localhost:3000/card/me",
-    //             method: "GET"
+    //             url: 'http://localhost:3000/card/me',
+    //             method: 'GET'
     //         }).then(res => {
     //             resolve(res);
     //         }).catch(err => {
@@ -18,8 +18,8 @@ export function getCard() {
     // } else {
         return new Promise((resolve, reject) => {
             axios({
-                url: "http://localhost:3000/card/me",
-                method: "GET"
+                url: `http://localhost:3000/card/me`,
+                method: 'GET'
             }).then(res => {
                 resolve(res);
             }).catch(err => {
@@ -35,7 +35,36 @@ export function closeCard(cardId) {
         axios({
             url: `http://localhost:3000/card/close`,
             data: {cardId: cardId},
-            method: "POST"
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// get all user
+export function allUser() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `http://localhost:3000/user/all`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// get add user
+export function addUser(user) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `http://localhost:3000/user`,
+            data: user,
+            method: 'POST'
         }).then(res => {
             resolve(res);
         }).catch(err => {

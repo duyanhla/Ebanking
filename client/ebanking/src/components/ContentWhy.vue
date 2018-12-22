@@ -95,6 +95,6 @@
 
 <script>
 export default {
-  name: "ContentWhy"
+  name: 'ContentWhy'
 };
 </script>

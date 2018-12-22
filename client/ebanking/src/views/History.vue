@@ -48,16 +48,10 @@
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading';
-import $ from 'jquery';
-
-var api = require("../utils/api.js");
+var api = require('../utils/api.js');
 
 export default {
   name: 'History',
-  components: {
-      InfiniteLoading,
-  },
   created() {
     this.fetchCard();
   },

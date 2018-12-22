@@ -67,7 +67,7 @@
 </template>
 
 <script>
-var api = require("../utils/api.js");
+var api = require('../utils/api.js');
 
 export default {
   name: 'Card',
@@ -95,7 +95,7 @@ export default {
     closeCard(card) {
       // check money
       if (card.Money > 0) {
-        alert("Vui lòng chuyển toàn bộ số dư trước khi đóng tài khoản");
+        alert('Vui lòng chuyển toàn bộ số dư trước khi đóng tài khoản');
       } else {
         // call api
         api.closeCard(card.Id).then(res => {

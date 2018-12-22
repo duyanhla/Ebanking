@@ -1,0 +1,235 @@
+<template>
+<div>
+  <main role="main" class="container">
+    <vue-element-loading :active="loading" spinner="bar-fade-scale" color="#FF6700" :is-full-screen="true"/>
+    <div class="d-flex justify-content-center align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" style="background-color:#6f42c1;">
+      <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100">Danh sách người dùng</h6>
+      </div>
+    </div>
+
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+      <h6 class="mb-0">Người dùng</h6>
+        <button type="button" style="padding: .375rem .75rem;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#addUserModal">
+            Thêm người dùng
+        </button>
+      <div class="row">
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              <strong class="d-block">Tài khoản</strong>
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              <strong class="d-block">Họ tên</strong>
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              <strong class="d-block">Email</strong>
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              <strong class="d-block">Số điện thoại</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- loop through cards -->
+      <div v-for="user in users" :key="user.Id" class="row">
+        <div class="col-6 col-md-3">
+            <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                {{user.Username}}
+            </p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              {{user.Name}}
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+              {{user.Email}}
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                {{user.Phone}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <!-- Modal -->
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm người dùng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form v-on:submit.prevent="addUser()" id="addUserForm" autocomplete="off">
+                    <vue-element-loading :active="loadingForm" spinner="bar-fade-scale" color="#FF6700" :is-full-screen="true"/>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">Tài khoản</label>
+                            <input type="text" class="form-control" id="username" maxlength="30" placeholder="Tài khoản"
+                                v-model="newUser.Username" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Họ tên</label>
+                            <input type="text" id="name" class="form-control" v-model="newUser.Name" placeholder="Họ và tên" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Ngày sinh</label>
+                            <date-picker id="datePicker" v-model="newUser.DOB" :config="options"></date-picker>
+                        </div>
+                        <div class="form-group">
+                            <label for="emai">Email</label>
+                            <input type="email" class="form-control" id="email" maxlength="100"
+                                placeholder="Email" v-model="newUser.Email" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại </label>
+                            <input type="text" class="form-control" id="phone" maxlength="10" placeholder="Số điện thoại"
+                            v-model="newUser.Phone" required="required" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" style="padding: .375rem .75rem;" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Hủy</button>
+                        <button type="submit" style="padding: .375rem .75rem;" id="addUserBtn" class="btn btn-outline-success btn-sm">Thêm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+  </main>
+</div>
+</template>
+
+<script>
+var api = require('../utils/api.js');
+import datePicker from 'vue-bootstrap-datetimepicker'; // datepicker
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'; // Import date picker css
+import VueElementLoading from 'vue-element-loading'
+import moment from 'moment';
+require('@/assets/js/index.js');
+export default {
+  name: 'User',
+  created() {
+    // get all card before create
+    this.fetchUser();
+  },
+  data () {
+    return {
+      loading: false, // used to init loading state (css, image) for entire page (full screen)
+      loadingForm: false, // used to init loading state (css, image) for modal add user
+      errAddUser: false,
+      users: [], // list users,
+      // new user
+      newUser: {
+            Username: '',
+            DOB: moment(new Date()).format('YYYY-MM-DD'),
+            Name: '',
+            Email: '',
+            Phone: '',
+            Permission: 0
+        },
+        options: {
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+        }      
+    }
+  },
+  components: {
+    datePicker, // date picker input
+    VueElementLoading  // loading page
+  },
+  methods: {
+    // get all card
+    fetchUser() {
+      this.loading = true; // loading entire page
+      this.users = [];
+      // call api
+      api.allUser().then(res => {
+        this.users = res.data;
+        setTimeout(() => this.loading = false, 1000); // finish loading after 1s
+      }).catch(err => {
+        setTimeout(() => this.loading = false, 1000); // finish loading after 1s
+        console.log(err);
+      })
+    },
+    // close card by id
+    addUser() {
+      this.loadingForm = true; // loading modal
+      // call api
+      api.addUser(this. newUser).then(res => {
+        this.fetchUser();
+        // this.users.push(res.data);
+        setTimeout(() => this.loadingForm = false, 2000); // finish loading after 2s
+        // show alert success
+        this.$dialog.alert('Thêm người dùng thành công!').then(function(dialog) { 
+            console.log('success');
+        });
+        // clear form
+        this.setDefaultNewUser();
+        // hide modal
+        $('#addUserModal').modal('hide');
+      }).catch(err => {
+        if (err.response.status == 422) {
+            this.$dialog.alert('Tài khoản đã tồn tại!').then(function(dialog) { 
+                console.log('422');
+            });
+        } else {
+            this.$dialog.alert('Thêm người dùng không thành công, vui lòng thử lại sau!').then(function(dialog) { 
+                console.log('another');
+            });
+        }
+        this.loadingForm = false;
+      })
+    },
+    setDefaultNewUser() {
+        this.newUser.Username = '';
+        this.newUser.Name = '';
+        this.newUser.Email = '';
+        this.newUser.Phone = '';
+        this.newUser.DOB = moment(new Date()).format('YYYY-MM-DD');
+        this.newUser.Permission = 0;
+    },
+  }
+}
+</script>
+
+<style>
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  color: #5672f9;
+}
+
+.closeCard {
+  cursor: pointer;
+}
+</style>
+

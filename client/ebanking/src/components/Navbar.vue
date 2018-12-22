@@ -15,26 +15,40 @@
                     <router-link to="/" class="nav-link"><span><font-awesome-icon :icon="['fa', 'home']" /></span> Trang chủ</router-link>
                   </li>
                   <template v-if="isLoggedIn">
-                    <li class="nav-item dropdown dropdown-slide">
-                      <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span><font-awesome-icon :icon="['fa', 'credit-card']" /></span> Tài khoản <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
-                      </a>
-                      <!-- Dropdown list -->
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <router-link to="/card" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'list']" /></span> Danh sách tài khoản</router-link>
-                         <router-link to="/history" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'history']" /></span> Lịch sử giao dịch</router-link>
-                      </div>
-                    </li>
-                    <li class="nav-item dropdown dropdown-slide">
-                      <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span><font-awesome-icon :icon="['fa', 'donate']" /></span> Chuyển tiền <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
-                      </a>
-                      <!-- Dropdown list -->
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'money-check-alt']" /></span> Chuyển tiền nội bộ</a>
-                        <a class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'address-book']" /></span> Quản lý danh bạ</a>
-                      </div>
-                    </li>
+                    <template v-if="user.Permission == 0">
+                      <li class="nav-item dropdown dropdown-slide">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span><font-awesome-icon :icon="['fa', 'credit-card']" /></span> Tài khoản <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
+                        </a>
+                        <!-- Dropdown list -->
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <router-link to="/card" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'list']" /></span> Danh sách tài khoản</router-link>
+                          <router-link to="/history" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'history']" /></span> Lịch sử giao dịch</router-link>
+                        </div>
+                      </li>
+                      <li class="nav-item dropdown dropdown-slide">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span><font-awesome-icon :icon="['fa', 'donate']" /></span> Chuyển tiền <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
+                        </a>
+                        <!-- Dropdown list -->
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'money-check-alt']" /></span> Chuyển tiền nội bộ</a>
+                          <a class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'address-book']" /></span> Quản lý danh bạ</a>
+                        </div>
+                      </li>
+                    </template>
+                    <template v-else>
+                      <li class="nav-item dropdown dropdown-slide">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span><font-awesome-icon :icon="['fa', 'list']" /></span> Quản lý <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
+                        </a>
+                        <!-- Dropdown list -->
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <router-link to="/user" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'user-circle']" /></span> Người dùng</router-link>
+                          <router-link to="/" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'credit-card']" /></span> Tài khoản thanh toán</router-link>
+                        </div>
+                      </li>
+                    </template>
                   </template>
                   <template v-else>
                     <li class="nav-item">
@@ -79,7 +93,7 @@
 
 <script>
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   computed: {
     // get isLoggedIn from store.js (Vuex)
     isLoggedIn: function() {
@@ -93,8 +107,8 @@ export default {
   methods: {
     // logout
     logout: function() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/");
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push('/');
       });
     }
   }

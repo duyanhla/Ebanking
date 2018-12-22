@@ -33,9 +33,8 @@
 </template>
 
 <script>
-import $ from 'jquery';
 export default {
-  name: "Login",
+  name: 'Login',
   created() {
     // set script recaptcha tag
     let recaptcha = document.createElement('script');
@@ -43,6 +42,7 @@ export default {
     document.head.appendChild(recaptcha);
   },
   mounted() {
+    // set secret key google recaptcha
     if (window.grecaptcha) {
       this.rcapt_id = grecaptcha.render( $('.g-recaptcha')[0], { sitekey : this.rcapt_sig_key });
     }
@@ -50,8 +50,8 @@ export default {
   data() {
     // all data
     return {
-      Username: "",
-      Password: "",
+      Username: '',
+      Password: '',
       Error: false,
       errCaptcha: false,
       rcapt_id: 0,
@@ -68,21 +68,23 @@ export default {
       if (g_recaptcha_response.length == 0) {
         this.errCaptcha = true;
       } else {
-        this.$store.dispatch("recaptcha", {g_recaptcha_response: g_recaptcha_response}).then(
+        this.$store.dispatch('recaptcha', {g_recaptcha_response: g_recaptcha_response}).then(
           res => {
             if (this.Password.length > 0) {
               let Username = this.Username;
               let Password = this.Password;
               // login
               this.$store
-                .dispatch("login", { Username, Password })
+                .dispatch('login', { Username, Password })
                 .then(res => {})
                 .catch(err =>  this.Error = true);
             }
           }
         ).catch(err => {
           console.log(err);
-          alert("Please complete captcha challange!");
+          this.$dialog.alert('Vui lòng xác nhận captcha!').then(function(dialog) { 
+            console.log('error recaptcha');
+          });
         })
       }
     }

@@ -1,7 +1,3 @@
-// support file
-// check token expire
-// format card number
-
 import jwtDecode from 'jwt-decode';
 
 // check token expire
