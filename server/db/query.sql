@@ -52,3 +52,19 @@ CREATE TABLE `listReceived` (
   `UserId` INT NOT NULL,
   PRIMARY KEY (`Id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; 
+
+DROP TABLE IF EXISTS `userRefreshTokenExt`;
+CREATE TABLE `userRefreshTokenExt` (
+  `userId` int(11) NOT NULL,
+  `refreshToken` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `rdt` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`userId`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `otp`;
+CREATE TABLE `otp` (
+  `userId` int(11) NOT NULL,
+	`otp` VARCHAR(6) NOT NULL,
+  `createdTime` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  PRIMARY KEY (`userId`)
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

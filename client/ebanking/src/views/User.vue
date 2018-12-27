@@ -183,17 +183,16 @@ export default {
       this.loadingForm = true; // loading modal
       // call api
       api.addUser(this. newUser).then(res => {
-        this.fetchUser();
-        // this.users.push(res.data);
-        setTimeout(() => this.loadingForm = false, 2000); // finish loading after 2s
+        setTimeout(() => this.loadingForm = false, 500); // finish loading after 2s
         // show alert success
         this.$dialog.alert('Thêm người dùng thành công!').then(function(dialog) { 
-            console.log('success');
+          console.log('success');
         });
         // clear form
         this.setDefaultNewUser();
         // hide modal
         $('#addUserModal').modal('hide');
+        this.fetchUser();
       }).catch(err => {
         if (err.response.status == 422) {
             this.$dialog.alert('Tài khoản đã tồn tại!').then(function(dialog) { 

@@ -4,6 +4,7 @@ var transfer = require('../db/opts').TRANSFER;
 var nodemailer = require('nodemailer');
 var moment = require('moment');
 var genOtp = require('otp-generator');
+var authRepo = require('../repos/authRepo');
 
 var router = express.Router();
 

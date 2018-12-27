@@ -35,7 +35,13 @@ var $ = global.jQuery;
 window.$ = $;
 
 // Tell Vue to install the plugin.
-Vue.use(VuejsDialog);
+Vue.use(VuejsDialog, {
+  html: true,
+  okText: 'Xác nhận',
+  cancelText: 'Hủy',
+  animation: 'bounce'
+});
+
 Vue.component('vue-element-loading', VueElementLoading);
 
 // add icon fontawesome

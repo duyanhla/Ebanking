@@ -7,6 +7,7 @@ import Card from './views/Card.vue';
 import History from './views/History.vue';
 import User from './views/User.vue';
 import Error from './views/500.vue';
+import Contact from './views/Contact.vue';
 
 Vue.use(Router);
 
@@ -56,6 +57,15 @@ const router = new Router({
         requiresAuth: true,
         title: 'Quản lí tài khoản',
         isAdmin: true
+      }
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: Contact,
+      meta: {
+        requiresAuth: true,
+        title: 'Quản lí danh bạ',
       }
     },
     {

@@ -1,6 +1,7 @@
 <template>
 <div>
   <main role="main" class="container">
+    <vue-element-loading :active="loading" spinner="bar-fade-scale" color="#FF6700" :is-full-screen="true"/>
     <div class="d-flex justify-content-center align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm" style="background-color:#6f42c1;">
       <div class="lh-100">
         <h6 class="mb-0 text-white lh-100">Danh sách tài khoản</h6>
@@ -68,6 +69,7 @@
 
 <script>
 var api = require('../utils/api.js');
+import VueElementLoading from 'vue-element-loading';
 
 export default {
   name: 'Card',
@@ -75,35 +77,59 @@ export default {
     // get all card before create
     this.fetchCard();
   },
+  components: {
+    VueElementLoading  // loading page
+  },
   data () {
     return {
+      loading: false, // used to init loading state (css, image) for entire page (full screen)
       cards: [] // list cards
     }
   },
   methods: {
     // get all card
     fetchCard() {
+      this.loading = true; // loading entire page
       this.cards = [];
       // call api
       api.getCard().then(res => {
         this.cards = res.data;
+        setTimeout(() => this.loading = false, 1000); // finish loading after 1s
       }).catch(err => {
         console.log(err);
+        setTimeout(() => this.loading = false, 1000); // finish loading after 1s
       })
     },
     // close card by id
     closeCard(card) {
       // check money
       if (card.Money > 0) {
-        alert('Vui lòng chuyển toàn bộ số dư trước khi đóng tài khoản');
+        this.$dialog.alert('Vui lòng chuyển toàn bộ số dư trước khi đóng tài khoản!').then(function(dialog) { 
+        });
       } else {
         // call api
-        api.closeCard(card.Id).then(res => {
-          console.log(res);
-          // update 
-          card.IsClosed = true;
-        }).catch(err => {
-          console.log(err);
+        // api.closeCard(card.Id).then(res => {
+        //   console.log(res);
+        //   // update 
+        //   card.IsClosed = true;
+        // }).catch(err => {
+        //   console.log(err);
+        // });
+        let message = {
+            title: 'Bạn có muốn đóng tài khoản này không?',
+            body: `Số tài khoản: ${card.Id}`
+        }
+        var that = this;
+        this.$dialog.confirm(message, {loader: true}).then(function(dialog) { 
+            api.closeCard(card.Id).then(res => {
+              that.fetchCard();
+              dialog.loading(false);
+              dialog.close();
+            }).catch(err => {
+                console.log(err);
+            })
+        }).catch(function() {
+            console.log('Clicked on cancel');
         });
       }
     }

@@ -83,3 +83,14 @@ exports.verifyAdmin = (req, res, next) => {
         });
     }
 }
+
+exports.verifyUser = (req, res, next) => {
+    if (req.token_payload.user.Permission === 0) {
+        next();
+    } else {
+        res.statusCode = 401;
+        res.json({
+            msg: 'Access denied'
+        });
+    }
+}

@@ -1,4 +1,5 @@
 var axios = require('axios');
+const api_path = 'http://localhost:3000'; // api path
 
 // get card
 export function getCard() {
@@ -7,7 +8,7 @@ export function getCard() {
     //     store.dispatch('renew_token');
     //     return new Promise((resolve, reject) => {
     //         axios({
-    //             url: 'http://localhost:3000/card/me',
+    //             url: '${api_path}/card/me',
     //             method: 'GET'
     //         }).then(res => {
     //             resolve(res);
@@ -18,7 +19,7 @@ export function getCard() {
     // } else {
         return new Promise((resolve, reject) => {
             axios({
-                url: `http://localhost:3000/card/me`,
+                url: `${api_path}/card/me`,
                 method: 'GET'
             }).then(res => {
                 resolve(res);
@@ -33,7 +34,7 @@ export function getCard() {
 export function closeCard(cardId) {
     return new Promise((resolve, reject) => {
         axios({
-            url: `http://localhost:3000/card/close`,
+            url: `${api_path}/card/close`,
             data: {cardId: cardId},
             method: 'POST'
         }).then(res => {
@@ -48,7 +49,7 @@ export function closeCard(cardId) {
 export function allUser() {
     return new Promise((resolve, reject) => {
         axios({
-            url: `http://localhost:3000/user/all`,
+            url: `${api_path}/user/all`,
             method: 'GET'
         }).then(res => {
             resolve(res);
@@ -58,13 +59,57 @@ export function allUser() {
     });  
 };
 
-// get add user
+// add user
 export function addUser(user) {
     return new Promise((resolve, reject) => {
         axios({
-            url: `http://localhost:3000/user`,
+            url: `${api_path}/user`,
             data: user,
             method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// get all contact
+export function allContact() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/contact/me`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// get all contact
+export function addContact(contact) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/contact`,
+            data: contact,
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// delete contact
+export function deleteContact(contact) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/contact`,
+            data: contact,
+            method: 'DELETE'
         }).then(res => {
             resolve(res);
         }).catch(err => {
