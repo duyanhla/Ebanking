@@ -8,7 +8,7 @@ import History from './views/History.vue';
 import User from './views/User.vue';
 import Error from './views/500.vue';
 import Contact from './views/Contact.vue';
-
+import Transaction from './views/Transaction.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -66,6 +66,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Quản lí danh bạ',
+      }
+    },
+    {
+      path: '/transaction',
+      name: 'transaction',
+      component: Transaction,
+      meta: {
+        requiresAuth: true,
+        title: 'Chuyển tiền nội bộ',
       }
     },
     {
