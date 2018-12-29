@@ -43,3 +43,9 @@ exports.allUser = () => {
     var sql = `select Id, Username, Name, Email, Phone, DOB from users where Permission = 0`;
     return db.load(sql);
 };
+
+exports.receiver = cardId => 
+{
+    var sql = `select Name,Phone,Email from users inner join cards on users.Id = cards.UserId where cards.Id = '${cardId}'`; 
+    return db.load(sql);
+}
