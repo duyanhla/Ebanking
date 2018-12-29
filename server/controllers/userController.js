@@ -150,4 +150,18 @@ router.get('/all', [authRepo.verifyAccessToken, authRepo.verifyAdmin], (req, res
     })
 });
 
+router.get('/receiver', authRepo.verifyAccessToken , (req, res) => {
+    var cardId= req.query.cardId;
+    console.log(req.query )
+    userRepo.receiver(cardId).then(data => {
+        res.statusCode = 200;
+        res.json(data);
+
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    })
+});
+
 module.exports = router;
