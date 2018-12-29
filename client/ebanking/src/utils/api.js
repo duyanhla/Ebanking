@@ -117,3 +117,32 @@ export function deleteContact(contact) {
         });
     });  
 };
+
+//get user information by cardID
+export function getUserbyCard(cardId) {
+    return new Promise((resolve,reject)=>{
+        axios ({
+            url: `${api_path}/user/receiver?cardId=${cardId}`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+        reject(err);
+        });
+    })
+}
+
+// gen otp
+export function genOTP(trans) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/transaction`,
+            data: trans,
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
