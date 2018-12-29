@@ -6,6 +6,7 @@ var express = require('express'),
 var userCtrl = require('./controllers/userController');
 var cardCtrl = require('./controllers/cardController');
 var contactCtrl = require('./controllers/contactController');
+var transCtrl = require('./controllers/transactionController');
 var verifyAccessToken = require('./repos/authRepo').verifyAccessToken;
 
 var app = express();
@@ -21,6 +22,7 @@ app.use(cors());
 app.use('/user', userCtrl);
 app.use('/card', verifyAccessToken, cardCtrl);
 app.use('/contact', verifyAccessToken, contactCtrl);
+app.use('/transaction', verifyAccessToken, transCtrl);
 
 var PORT = process.env.PORT || 3000;
 
