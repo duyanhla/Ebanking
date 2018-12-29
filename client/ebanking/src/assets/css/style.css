@@ -242,7 +242,7 @@ a:focus, a:hover {
 
 .form-control {
   border-radius: 2px;
-  height: 50px;
+  /* height: 50px; */
   background-color: transparent;
   color: #666;
   box-shadow: none;
@@ -431,7 +431,7 @@ button {
   font-size: 15px;
   letter-spacing: 1px;
   display: inline-block;
-  padding: 15px 30px;
+  /* padding: 15px 30px; */
   border-radius: 4px;
 }
 
