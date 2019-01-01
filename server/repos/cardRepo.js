@@ -31,3 +31,8 @@ exports.loadAllUser = () => {
     var sql = `select c.Id, c.Money, u.Username, u.Name, c.IsClosed from cards c, users u where c.UserId = u.Id`;
     return db.load(sql);
 };
+
+exports.loadUser = cardId => {
+    var sql = `select c.Id, c.Money, u.Username, u.Name, c.IsClosed from cards c, users u where c.UserId = u.Id and c.Id = ${cardId}`;
+    return db.load(sql);
+};

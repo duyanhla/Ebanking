@@ -55,6 +55,51 @@ router.post('/add', (req, res) => {
     }
 });
 
+// update card by admin
+router.post('/update', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        var cardId = req.body.cardId;
+        var money = req.body.money;
+        cardRepo.updateMoney(cardId, money)
+        .then(insertId => {
+            res.statusCode = 201;
+            res.json(req.body);
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        });
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
+});
+
+// get card 
+router.get('/', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        var cardId = req.query.cardId;
+        cardRepo.loadUser(cardId).then(rows => {
+            res.statusCode = 200;
+            res.json(rows);
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        });
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
+});
+
 // get all card
 router.get('/me', (req, res) => {
     var uid = req.token_payload.user.Id;
