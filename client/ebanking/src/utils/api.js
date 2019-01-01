@@ -1,6 +1,20 @@
 var axios = require('axios');
 const api_path = 'http://localhost:3000'; // api path
 
+// get all card
+export function getAllCard() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/card/all`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
 // get card
 export function getCard() {
     // if (!supports.checkExpireToken()) {
@@ -36,6 +50,21 @@ export function closeCard(cardId) {
         axios({
             url: `${api_path}/card/close`,
             data: {cardId: cardId},
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// add card
+export function addCard(userName) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/card/add`,
+            data: {userName: userName},
             method: 'POST'
         }).then(res => {
             resolve(res);

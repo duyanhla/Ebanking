@@ -45,7 +45,7 @@
                         <!-- Dropdown list -->
                         <div class="dropdown-menu dropdown-menu-right">
                           <router-link to="/user" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'user-circle']" /></span> Người dùng</router-link>
-                          <router-link to="/" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'credit-card']" /></span> Tài khoản thanh toán</router-link>
+                          <router-link to="/payment" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'credit-card']" /></span> Tài khoản thanh toán</router-link>
                         </div>
                       </li>
                     </template>
