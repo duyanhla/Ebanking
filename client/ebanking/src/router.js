@@ -9,6 +9,8 @@ import User from './views/User.vue';
 import Error from './views/500.vue';
 import Contact from './views/Contact.vue';
 import Transaction from './views/Transaction.vue';
+import Payment from './views/Payment.vue';
+import Recharge from './views/Recharge.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -75,6 +77,26 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Chuyển tiền nội bộ',
+      }
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: Payment,
+      meta: {
+        requiresAuth: true,
+        title: 'Quản lí tài khoản thanh toán',
+        isAdmin: true
+      }
+    },
+    {
+      path: '/recharge',
+      name: 'recharge',
+      component: Recharge,
+      meta: {
+        requiresAuth: true,
+        title: 'Nạp tiền',
+        isAdmin: true
       }
     },
     {

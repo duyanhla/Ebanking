@@ -5,6 +5,7 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 var genOtp = require('otp-generator');
 var authRepo = require('../repos/authRepo');
+var userRepo = require('../repos/userRepo');
 
 var router = express.Router();
 
@@ -23,6 +24,82 @@ router.post('/', (req, res) => {
         });
 });
 
+// add card by admin
+router.post('/add', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        var userName = req.body.userName;
+        userRepo.getUserId(userName)
+        .then(user => {
+            cardRepo.addCard(user[0].Id)
+            .then(insertId => {
+                res.statusCode = 201;
+                res.json(req.body);
+            })
+            .catch(err => {
+                console.log(err);
+                res.statusCode = 500;
+                res.end();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        })
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
+});
+
+// update card by admin
+router.post('/update', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        var cardId = req.body.cardId;
+        var money = req.body.money;
+        cardRepo.updateMoney(cardId, money)
+        .then(insertId => {
+            res.statusCode = 201;
+            res.json(req.body);
+        })
+        .catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        });
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
+});
+
+// get card 
+router.get('/', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        var cardId = req.query.cardId;
+        cardRepo.loadUser(cardId).then(rows => {
+            res.statusCode = 200;
+            res.json(rows);
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        });
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
+});
+
 // get all card
 router.get('/me', (req, res) => {
     var uid = req.token_payload.user.Id;
@@ -34,6 +111,26 @@ router.get('/me', (req, res) => {
         res.statusCode = 500;
         res.end();
     });
+});
+
+// get all card, user
+router.get('/all', (req, res) => {
+    var per = req.token_payload.user.Permission;
+    if (per !== 0) {
+        cardRepo.loadAllUser().then(cards => {
+            res.statusCode = 200;
+            res.json(cards);
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+        });
+    }
+    else {
+        console.log("Not admin");
+        res.statusCode = 500;
+        res.end();
+    }
 });
 
 // close card

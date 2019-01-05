@@ -17,7 +17,8 @@ import {
   faCreditCard,
   faDonate,
   faShare,
-  faPhone
+  faPhone,
+  faDollarSign
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'; // fontawesome core
 import Vue from 'vue';
@@ -45,7 +46,7 @@ Vue.use(VuejsDialog, {
 Vue.component('vue-element-loading', VueElementLoading);
 
 // add icon fontawesome
-library.add(faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard);
+library.add(faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard, faDollarSign);
 Vue.component('font-awesome-icon', FontAwesomeIcon); // set component fontawesome 
 
 Vue.config.productionTip = false;
