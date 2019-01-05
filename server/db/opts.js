@@ -15,7 +15,7 @@ var opts = {
     TRANSFER: {
         fee: 0.05, // %
         max: 1000000,
-        min: 10000
+        min: 1000
     },
 
     DB: {

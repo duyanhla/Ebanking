@@ -7,113 +7,188 @@
       </div>
     </div>
     <div class="my-3 p-3 bg-white rounded shadow-sm">
-        <form>
-    <vue-element-loading :active="loadingForm" spinner="bar-fade-scale" color="#FF6700" :is-full-screen="true"/>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="sourceCard">Tài khoản thanh toán</label>
-        <select class="custom-select" id="sourceCard" v-model="sourceCard" v-on:change="sourceChange" >
-            <option :value="null" disabled >Chọn tài khoản</option>
-            <option v-for="card in cards" :key="card.Id" v-bind:value="card">{{card.Id}}</option>
-        </select>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="curMoney"  >Số dư khả dụng (VND)</label>
-      <input v-model="curMoney" type="number" class="form-control" id="curMoney" readonly value="0">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="desCardId">Số tài khoản nhận</label>
-      <input v-model="desCardId" type="text" class="form-control" id="desCardId" v-on:change="desChange" maxlength="16">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputCity">Tên người nhận</label>
-      <input type="text" class="form-control" id="inputCity" readonly v-model="receiverName">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="transMoney">Số tiền chuyển</label>
-      <input type="text" class="form-control" id="transMoney" v-model="transMoney">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="messages">Nội dung</label>
-      <input type="text" class="form-control" id="messages" v-model="messages">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputZip">Thanh toán phí</label>
-      <div class="row">
-      <div class="form-check col offset-1">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="true" v-model="fee" checked>
-        <label class="form-check-label" for="exampleRadios1">
-            Người nhận
-        </label>
-      </div>
-      <div class="form-check col">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="false" v-model="fee" >
-        <label class="form-check-label" for="exampleRadios2">
-            Người gửi
-        </label>
-      </div>
-      </div>
-    </div>
-  </div>
-  <button type="button" class="btn btn-outline-success btn-lg" v-on:click="otpgen">Chuyển tiền</button>
-</form>
-    </div>
-    <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Nhập OTP</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form v-on:submit.prevent="confirmOTP()" id="confirmotp" autocomplete="off">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="otpcode">Mã OTP</label>
-                            <input type="text" class="form-control" id="otpcode" maxlength="6"
-                                v-model="otp" required="required" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" style="padding: .375rem .75rem;" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Hủy</button>
-                        <button type="submit" style="padding: .375rem .75rem;" id="addUserBtn" class="btn btn-outline-success btn-sm">Xác nhận</button>
-                    </div>
-                </form>
-            </div>
+      <form>
+        <vue-element-loading :active="loadingForm" spinner="bar-fade-scale" color="#FF6700" :is-full-screen="true"/>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="sourceCard">Tài khoản thanh toán</label>
+              <select class="custom-select" id="sourceCard" v-model="sourceCard" v-on:change="sourceChange" >
+                <option :value="null" disabled >Chọn tài khoản</option>
+                <option v-for="card in cards" :key="card.Id" v-bind:value="card">{{card.Id}}</option>
+              </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="curMoney">Số dư khả dụng (VND)</label>
+            <input v-model="curMoney" type="number" class="form-control" id="curMoney" readonly value="0">
+          </div>
         </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="desCardId">Số tài khoản nhận</label>
+            <input v-model="desCardId" type="text" class="form-control" id="desCardId" v-on:change="desChange" maxlength="16">
+            <a data-toggle="modal" data-target="#contactModal">Chọn từ danh bạ</a>
+            <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="contactModalLabel">Danh bạ</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table">
+                          <!-- <thead class="thead-dark"><tr><th>Tên người dùng</th></tr></thead> -->
+                          <tbody>
+                              <tr @click="selectContact(contact)" v-for="contact in contacts" :key="contact.Name" v-bind:value="contact">
+                                {{contact.Name}}
+                              </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputCity">Tên người nhận</label>
+            <input type="text" class="form-control" id="inputCity" readonly v-model="receiverName">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="transMoney">Số tiền chuyển (VND)</label>
+            <input type="number" max="10000000" class="form-control" id="transMoney" v-model="transMoney">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="messages">Nội dung</label>
+            <input type="text" class="form-control" id="messages" v-model="messages">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputZip">Thanh toán phí <template v-if="this.fee > 0 && this.err != ''">- <span class="font-italic">{{this.fee}} VND</span></template></label>
+            <div class="row">
+            <div class="form-check col offset-1">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="true" v-model="feeReceiver" checked>
+              <label class="form-check-label" for="exampleRadios1">Người nhận</label>
+            </div>
+            <div class="form-check col">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="false" v-model="feeReceiver" >
+              <label class="form-check-label" for="exampleRadios2">Người gửi</label>
+            </div>
+            </div>
+          </div>
+        </div>
+        <p class="m-0 text-danger font-weight-bold font-italic" v-if="this.err.length != 0">{{ this.err }}</p>
+        <button type="button" class="btn btn-outline-success btn-lg" :disabled="checkValidCond" data-toggle="modal" data-target="#confirmModal">Chuyển tiền</button>
+      </form>
+    </div>
+    <!-- otp modal -->
+    <div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="otpModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="otpModalLabel">Nhập OTP</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form v-on:submit.prevent="confirmOTP()" id="confirmotp" autocomplete="off">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="otpcode">Mã OTP</label>
+                <input type="text" class="form-control" id="otpcode" maxlength="6" v-model="otp" required="required" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-success btn-sm">Xác nhận</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- confirm modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel">Xác nhận giao dịch</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row pb-2">
+                <div class="col">
+                  <p class="m-0">Tài khoản chuyển:</p>
+                  <p class="m-0 font-weight-bold" v-if="this.sourceCard">{{ this.sourceCard.Id }}</p>
+                </div>
+                <div class="col">
+                  <p class="m-0">Tài khoản nhận:</p>
+                  <p class="m-0 font-weight-bold" v-if="this.desCardId.length === 16">{{ this.desCardId }}</p>
+                </div>
+              </div>
+              <div class="row pb-2">
+                <div class="col">
+                  <p class="m-0">Tên người nhận:</p>
+                  <p class="m-0 font-weight-bold">{{ this.receiverName }}</p>
+                </div>
+                <div class="col">
+                  <p class="m-0">Số tiền chuyển:</p>
+                  <p class="m-0 font-weight-bold">{{ this.transMoney }} VND</p>
+                </div>
+              </div>
+              <div class="row pb-2">
+                <div class="col">
+                  <p class="m-0">Phí giao dịch:</p>
+                  <p class="m-0 font-weight-bold">{{ this.fee }} VND</p>
+                </div>
+                <div class="col">
+                  <p class="m-0">Nội dung:</p>
+                  <p class="m-0 font-weight-bold">{{ this.messages }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+            <button type="button" class="btn btn-primary" v-on:click="otpgen">Xác nhận</button>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </div>
 </template>
-
+ 
 <script>
 var api = require('../utils/api.js');
+var opt = require('../utils/opts.js');
 import VueElementLoading from 'vue-element-loading';
 require('@/assets/js/index.js');
 export default {
   name: 'Transaction',
   created() {
     this.fetchCard();
+    this.fetchContact();
   },
   data () {
     return {
+      contacts:[],
       cards: [],
       sourceCard: null,
       desCardId: '',
       curMoney: 0,
       receiverName: '',
-      fee: true,
+      feeReceiver: true,
       transMoney: 0,
       loadingForm: false,
       messages: '',
-      otp: ''
+      otp: '',
+      transId: 0,
+      err: '',
     }
   },
    components: {
@@ -128,25 +203,51 @@ export default {
         console.log(err);
       })
     },
+    fetchContact() {
+      this.contacts = [];
+      api.allContact().then(res => {
+        this.contacts = res.data;
+        console.log(res)
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    selectContact(contact) {
+      this.desCardId = contact.CardId;
+      this.receiverName = contact.Name;
+      $("#contactModal").modal('hide');
+    },
     sourceChange() {
-      this.curMoney=this.sourceCard.Money;
+      this.curMoney = this.sourceCard.Money;
     },
     desChange() {
       if(this.desCardId.length == 16)
       {
-        this.loadingForm=true;
+        this.loadingForm = true;
         api.getUserbyCard(this.desCardId).then(res => {
-        this.receiverName = res.data[0].Name;
-        this.loadingForm=false;
-      }).catch(err => {
-        console.log(err);
-      })
+          this.receiverName = res.data[0].Name;
+          this.loadingForm = false;
+        }).catch(err => {
+          this.loadingForm = false;
+          this.receiverName = '';
+          console.log(err);
+        })
       } else {
-        this.receiverName='';
+        this.receiverName = '';
       }
     },
     confirmOTP() {
-      console.log(this.otp)
+      api.verifyOTP(this.otp, this.transId).then(res => {
+        this.otp = '';
+        $('#otpModal').modal('hide');
+        this.$dialog.alert('Chuyển khoản thành công!').then(function(dialog) {
+          console.log('success');
+        });
+      }).catch(err => {
+        this.$dialog.alert('OTP không hợp lệ hoặc hết hạn!').then(function(dialog) {
+          console.log(err);
+        });
+      });
     },
     otpgen() {
       var trans = {
@@ -156,24 +257,74 @@ export default {
         'Message': this.messages
       }
       api.genOTP(trans).then(res => {
+        this.transId = res.data.transId;
+        $('#confirmModal').modal('hide');
         $('#otpModal').modal('show');
       }).catch(err => {
         console.log(err);
       })
     }
+  },
+  computed: {
+    checkValidCond() {
+      if (this.sourceCard == null) {
+        this.err = 'Vui lòng chọn tài khoản giao dịch!';
+        return true;
+      } else if (this.sourceCard.Money == 0) {
+        this.err = 'Không thể giao dịch với số dư là 0!';
+        return true;
+      }
+      if (this.receiverName == '') {
+        this.err = 'Vui lòng nhập đúng số tài khoản nhận!';
+        return true;
+      } else if (this.sourceCard != null && this.desCardId == this.sourceCard.Id) {
+        this.err = 'Không thể giao dịch với chính bản thân!';
+        return true;
+      }
+      if (this.transMoney < opt.TRANSFER.minTrans) {
+        this.err = `Số tiền giao dịch tối thiểu là ${opt.TRANSFER.minTrans} VND`;
+        return true;
+      } else if (this.transMoney > opt.TRANSFER.maxTrans) {
+        this.err = `Số tiền giao dịch tối đa là ${opt.TRANSFER.maxTrans} VND`;
+        return true;
+      } else if (this.transMoney % opt.TRANSFER.mul != 0) {
+        this.err = `Số tiền giao dịch phải là bội số của ${opt.TRANSFER.mul}`;
+        return true;
+      }
+      if (this.messages == '') {
+        this.err = 'Vui lòng nhập nội dung giao dịch!';
+        return true;
+      }
+      if (!this.feeReceiver) {
+        if (this.sourceCard.Money < this.transMoney + this.fee) {
+          this.err = `Số dư không đủ để thực hiện giao dịch`;
+          return true;
+        }
+      }
+      this.err = '';
+      return false;
+    },
+    fee: function() {
+      if (this.sourceCard == null || this.receiverName == '') {
+        return 0;
+      } else {
+        var res = this.transMoney*opt.TRANSFER.fee/100;
+        if (res < opt.TRANSFER.minFee) {
+          res = opt.TRANSFER.minFee;
+        } else if (res > opt.TRANSFER.maxFee) {
+          res = opt.TRANSFER.maxFee;
+        }
+        return res;
+      }
+    }
   }
 }
-
+ 
 </script>
-
+ 
 <style>
-a {
+a, tr {
   cursor: pointer;
 }
-
-a:hover {
-  color: #5672f9;
-}
-
+ 
 </style>
-

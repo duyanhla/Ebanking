@@ -7,6 +7,7 @@ var userCtrl = require('./controllers/userController');
 var cardCtrl = require('./controllers/cardController');
 var contactCtrl = require('./controllers/contactController');
 var transCtrl = require('./controllers/transactionController');
+var otpCtrl = require('./controllers/otpController');
 var verifyAccessToken = require('./repos/authRepo').verifyAccessToken;
 
 var app = express();
@@ -23,6 +24,7 @@ app.use('/user', userCtrl);
 app.use('/card', verifyAccessToken, cardCtrl);
 app.use('/contact', verifyAccessToken, contactCtrl);
 app.use('/transaction', verifyAccessToken, transCtrl);
+app.use('/otp', verifyAccessToken, otpCtrl);
 
 var PORT = process.env.PORT || 3000;
 

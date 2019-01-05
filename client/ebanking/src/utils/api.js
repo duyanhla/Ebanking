@@ -146,3 +146,45 @@ export function genOTP(trans) {
         });
     });  
 };
+
+// verify otp
+export function verifyOTP(otp, transId) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/otp`,
+            data: {otp: otp, transId: transId},
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    }); 
+};
+// get all transaction
+
+export function getTransactionsByCardId(cardId) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/transaction/history?cardId=${cardId}`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+export function allTransactionsByUserId() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/transaction/me`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
