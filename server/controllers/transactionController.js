@@ -3,6 +3,8 @@ var transRepo = require('../repos/transactionRepo');
 var otpRepo = require('../repos/otpRepo');
 var transfer = require('../db/opts').TRANSFER;
 var nodemailer = require('nodemailer');
+var cardRepo = require('../repos/cardRepo');
+
 var router = express.Router();
  
 var smtpTransport = nodemailer.createTransport({
@@ -13,6 +15,47 @@ var smtpTransport = nodemailer.createTransport({
     }
 });
  
+router.post('/confirm', (req, res) => {
+    var fee = +req.body.fee;
+    var feeReceiver = req.body.feeReceiver;
+    console.log(feeReceiver);
+    console.log(typeof(feeReceiver));
+    var transId = req.body.transId;
+    transRepo.single(transId).then(trans => {
+        var srcCardId = trans[0].SrcCardId;
+        var desCardId = trans[0].DesCardId;
+        var srcCard = cardRepo.load(srcCardId);
+        var desCard = cardRepo.load(desCardId);
+        Promise.all([srcCard, desCard]).then(([src, des]) => {
+            src[0].Money = src[0].Money - trans[0].Money;
+            des[0].Money = des[0].Money + trans[0].Money;
+            if (feeReceiver) {
+                des[0].Money = des[0].Money - fee;
+            } else {
+                src[0].Money = src[0].Money - fee;
+            }
+            var updateSrc = cardRepo.updateMoney(src[0].Id, src[0].Money);
+            var updateDes = cardRepo.updateMoney(des[0].Id, des[0].Money);
+            Promise.all([updateSrc, updateDes]).then(([idSrc, idDes]) => {
+                res.json({
+                    msg: 'success'
+                });
+            }).catch(err => {
+                console.log(err);
+                res.statusCode = 500;
+                res.end('View error log on console.');
+            })
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('View error log on console.');
+        });
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    });
+});
  
 router.post('/', (req, res) => {
     transRepo.newTransaction(req.body) .then(affectedRows => {

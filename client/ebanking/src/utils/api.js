@@ -222,6 +222,22 @@ export function verifyOTP(otp, transId) {
         });
     }); 
 };
+
+// confirmm transaction
+export function confirmTrans(transId, fee, feeReceiver) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/transaction/confirm`,
+            data: {fee: fee, transId: transId, feeReceiver: feeReceiver},
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
 // get all transaction
 
 export function getTransactionsByCardId(cardId) {

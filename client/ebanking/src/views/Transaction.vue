@@ -67,14 +67,14 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputZip">Thanh toán phí <template v-if="this.fee > 0 && this.err != ''">- <span class="font-italic">{{this.fee}} VND</span></template></label>
+            <label for="inputZip">Thanh toán phí <template v-if="this.fee > 0 && this.err == ''">- <span class="font-italic">{{this.fee}} VND</span></template></label>
             <div class="row">
             <div class="form-check col offset-1">
-              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="true" v-model="feeReceiver" checked>
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value=true v-model="feeReceiver" checked>
               <label class="form-check-label" for="exampleRadios1">Người nhận</label>
             </div>
             <div class="form-check col">
-              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="false" v-model="feeReceiver" >
+              <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value=false v-model="feeReceiver" >
               <label class="form-check-label" for="exampleRadios2">Người gửi</label>
             </div>
             </div>
@@ -238,11 +238,22 @@ export default {
     },
     confirmOTP() {
       api.verifyOTP(this.otp, this.transId).then(res => {
-        this.otp = '';
-        $('#otpModal').modal('hide');
-        this.$dialog.alert('Chuyển khoản thành công!').then(function(dialog) {
-          console.log('success');
-        });
+        api.confirmTrans(this.transId, this.fee, this.feeReceiver).then(response => {
+          this.desCardId = '';
+          this.sourceCard = null;
+          this.receiverName = '';
+          this.err = '';
+          this.messages = '';
+          this.transMoney = 0;
+          this.feeReceiver = true;
+          this.curMoney = 0;
+          $('#otpModal').modal('hide');
+          this.otp = '';
+          this.$dialog.alert('Chuyển khoản thành công!').then(function(dialog) {
+            console.log('success');
+          });
+          this.fetchCard();
+        })
       }).catch(err => {
         this.$dialog.alert('OTP không hợp lệ hoặc hết hạn!').then(function(dialog) {
           console.log(err);
@@ -291,15 +302,19 @@ export default {
         this.err = `Số tiền giao dịch phải là bội số của ${opt.TRANSFER.mul}`;
         return true;
       }
-      if (this.messages == '') {
-        this.err = 'Vui lòng nhập nội dung giao dịch!';
+      if (this.sourceCard.Money < this.transMoney) {
+        this.err = `Số dư không đủ để thực hiện giao dịch`;
         return true;
       }
-      if (!this.feeReceiver) {
+      if (this.feeReceiver == false) {
         if (this.sourceCard.Money < this.transMoney + this.fee) {
           this.err = `Số dư không đủ để thực hiện giao dịch`;
           return true;
         }
+      }
+      if (this.messages == '') {
+        this.err = 'Vui lòng nhập nội dung giao dịch!';
+        return true;
       }
       this.err = '';
       return false;
