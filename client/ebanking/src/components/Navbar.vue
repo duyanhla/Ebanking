@@ -32,8 +32,8 @@
                         </a>
                         <!-- Dropdown list -->
                         <div class="dropdown-menu dropdown-menu-right">
-                          <router-link to="/transaction" class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'money-check-alt']" /></span> Chuyển tiền nội bộ</router-link>
-                          <router-link to="/contact" class="dropdown-item" href="#"><span><font-awesome-icon :icon="['fa', 'address-book']" /></span> Quản lý danh bạ</router-link>
+                          <router-link to="/transaction" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'money-check-alt']" /></span> Chuyển tiền nội bộ</router-link>
+                          <router-link to="/contact" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'address-book']" /></span> Quản lý danh bạ</router-link>
                         </div>
                       </li>
                     </template>
