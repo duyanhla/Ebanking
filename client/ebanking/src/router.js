@@ -77,7 +77,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Chuyển tiền nội bộ',
-      }
+      },
+      props: true
     },
     {
       path: '/payment',
@@ -116,6 +117,8 @@ const router = new Router({
 
 // action before access page
 router.beforeEach((to, from, next) => {
+  // set title
+  document.title = to.meta.title;
   if (store.getters.isLoggedIn) {
     store.dispatch('renew_token');
     // if (store.getters.currentUser == null) {
@@ -154,8 +157,6 @@ router.beforeEach((to, from, next) => {
     //go to next
     next();
   }
-  // set title
-  document.title = to.meta.title;
 });
 
 export default router;

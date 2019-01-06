@@ -239,16 +239,16 @@ export default {
             console.log('Success');
           });
           dialog.close();
-            that.fetchContact();
-          }).catch(err => {
-            console.log(err);
-            var msg = 'Xóa liên hệ không thành công, vui lòng thử lại sau!';
-            var status = err.response.status;
-            clone.alert(msg).then(function(d) { 
-              console.log(status);
-            });
-            dialog.loading(false);
-          })
+          that.fetchContact();
+        }).catch(err => {
+          console.log(err);
+          var msg = 'Xóa liên hệ không thành công, vui lòng thử lại sau!';
+          var status = err.response.status;
+          clone.alert(msg).then(function(d) { 
+            console.log(status);
+          });
+          dialog.loading(false);
+        })
       }).catch(function() {
         console.log('Clicked on cancel');
       });

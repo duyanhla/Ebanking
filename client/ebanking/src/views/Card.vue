@@ -82,30 +82,37 @@ export default {
     closeCard(card) {
       // check money
       if (card.Money > 0) {
+        var that = this;
         this.$dialog.alert('Vui lòng chuyển toàn bộ số dư trước khi đóng tài khoản!').then(function(dialog) { 
+          that.$router.push({name: 'transaction', params: {card: card}})
         });
       } else {
-        // call api
-        // api.closeCard(card.Id).then(res => {
-        //   console.log(res);
-        //   // update 
-        //   card.IsClosed = true;
-        // }).catch(err => {
-        //   console.log(err);
-        // });
         let message = {
             title: 'Bạn có muốn đóng tài khoản này không?',
             body: `Số tài khoản: ${card.Id}`
         }
         var that = this;
+        var clone = this.$dialog;
         this.$dialog.confirm(message, {loader: true}).then(function(dialog) { 
-            api.closeCard(card.Id).then(res => {
-              that.fetchCard();
-              dialog.loading(false);
-              dialog.close();
-            }).catch(err => {
-                console.log(err);
-            })
+          api.closeCard(card.Id).then(res => {
+            that.fetchCard();
+            dialog.loading(false);
+            clone.alert('Đóng tài khoản thành công').then(function(d) { 
+              console.log('Success');
+            });
+            dialog.close();
+          }).catch(err => {
+            var msg = 'Đóng tài khoản không thành công, vui lòng thử lại sau!';
+            var status = err.response.status;
+            if (status == 409) {
+              msg = 'Không thể đóng tài khoản cuối cùng!';
+            }
+            dialog.loading(false);
+            dialog.close();
+            clone.alert(msg).then(function(d) { 
+              console.log(status);
+            });
+          })
         }).catch(function() {
             console.log('Clicked on cancel');
         });

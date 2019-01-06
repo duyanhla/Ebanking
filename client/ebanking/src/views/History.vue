@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="my-3 p-3 bg-white rounded shadow-sm">
-        <h6 class="mb-0">Lịch sử giao dịch</h6>
+        <h6 class="mb-0">Lịch sử giao dịch (30 ngày gần nhất)</h6>
         <div class="row">
           <div class="col-md-3 col-12">
             <div class="input-group mb-3">

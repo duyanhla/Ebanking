@@ -112,7 +112,7 @@ router.post('/', (req, res) => {
 });
 
 router.get('/history', (req, res) => {
-    var cardId= req.query.cardId;
+    var cardId = req.query.cardId;
     transRepo.getTransactionByCardId(cardId).then(data => {
         res.statusCode = 200;
         res.json(data);

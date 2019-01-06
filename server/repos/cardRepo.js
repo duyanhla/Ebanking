@@ -27,6 +27,11 @@ exports.cardByUser = userId => {
     return db.load(sql);
 };
 
+exports.countOpenCardByUser = userId => {
+    var sql = `select count(*) as countOpen from cards where UserId = '${userId}' and IsClosed = 0`;
+    return db.load(sql);
+}
+
 exports.openCardByUser = userId => {
     var sql = `select * from cards where UserId = '${userId}' and IsClosed = 0`;
     return db.load(sql);

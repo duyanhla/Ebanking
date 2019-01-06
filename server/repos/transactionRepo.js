@@ -13,13 +13,13 @@ exports.allTransactions =() =>
 }
 
 exports.getTransactionByCardId = cardId => {
-    var sql = `select * from transactions where (SrcCardId = '${cardId}' or DesCardId = '${cardId}') and Status = 'Confirmed'`;
+    var sql = `select * from transactions where (SrcCardId = '${cardId}' or DesCardId = '${cardId}') and Status = 'Confirmed' and CreatedTime BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()`;
     return db.load(sql);
 };
 
 
 exports.allTransactionsByUserId = userId => {
-    var sql = `select distinct t.* from transactions t join cards c on (c.Id = t.SrcCardId  or c.Id = t.DesCardId) join  users u on u.Id = c.UserId where u.Id = '${userId}' and t.Status = 'Confirmed'`;
+    var sql = `select distinct t.* from transactions t join cards c on (c.Id = t.SrcCardId  or c.Id = t.DesCardId) join  users u on u.Id = c.UserId where u.Id = '${userId}' and t.Status = 'Confirmed' and t.CreatedTime BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()`;
     return db.load(sql);
 };
 

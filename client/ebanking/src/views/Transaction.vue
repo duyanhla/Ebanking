@@ -174,7 +174,12 @@ export default {
   created() {
     this.fetchCard();
     this.fetchContact();
+    if (this.card != null) {
+      this.sourceCard = this.card;
+      this.curMoney = this.sourceCard.Money;
+    }
   },
+  props: ['card'],
   data () {
     return {
       contacts:[],

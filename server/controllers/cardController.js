@@ -149,9 +149,22 @@ router.get('/all', (req, res) => {
 // close card
 router.post('/close', (req, res) => {
     var cardId = req.body.cardId;
-    cardRepo.closeCard(cardId).then(cards => {
-        res.statusCode = 200;
-        res.json(cards);
+    var uid = req.token_payload.user.Id;
+    cardRepo.countOpenCardByUser(uid).then(count => {
+        console.log(count);
+        if (count[0].countOpen == 1) {
+            res.statusCode = 409;
+            res.end();
+        } else {
+            cardRepo.closeCard(cardId).then(cards => {
+                res.statusCode = 200;
+                res.json(cards);
+            }).catch(err => {
+                console.log(err);
+                res.statusCode = 500;
+                res.end();
+            });
+        }
     }).catch(err => {
         console.log(err);
         res.statusCode = 500;
