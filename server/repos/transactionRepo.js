@@ -13,13 +13,13 @@ exports.allTransactions =() =>
 }
 
 exports.getTransactionByCardId = cardId => {
-    var sql = `select * from transactions where SrcCardId = '${cardId}' or DesCardId = '${cardId}'`;
+    var sql = `select * from transactions where (SrcCardId = '${cardId}' or DesCardId = '${cardId}') and Status = 'Confirmed'`;
     return db.load(sql);
 };
 
 
 exports.allTransactionsByUserId = userId => {
-    var sql = `select t.* from transactions t join cards c on c.Id = t.SrcCardId  join  users u on u.Id = c.UserId where u.Id = '${userId}'`;
+    var sql = `select distinct t.* from transactions t join cards c on (c.Id = t.SrcCardId  or c.Id = t.DesCardId) join  users u on u.Id = c.UserId where u.Id = '${userId}' and t.Status = 'Confirmed'`;
     return db.load(sql);
 };
 

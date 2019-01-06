@@ -10,58 +10,36 @@
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
       <h6 class="mb-0">Tài khoản thanh toán</h6>
-      <div class="row">
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Số tài khoản</strong>
-            </p>
-          </div>
+      <template v-if="cards.length">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Số tài khoản</th>
+                <th scope="col">Số dư (VND)</th>
+                <th scope="col">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr :class="{ 'table-info' : index % 2 == 0, 'table-light': index % 2 == 1}" v-for="(card, index) in cards" :key="card.Id">
+                <td>{{card.Id}}</td>
+                <td>{{card.Money}}</td>
+                <td>
+                  <template v-if="card.IsClosed == 0">
+                    Hoạt động <span><font-awesome-icon class="closeCard" :icon="['fa', 'backspace']" v-on:click="closeCard(card)"/></span>
+                  </template>
+                  <template v-else>
+                    Đã đóng
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Số dư (VND)</strong>
-            </p>
-          </div>
-        </div>
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Trạng thái</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- loop through cards -->
-      <div v-for="card in cards" :key="card.Id" class="row">
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Id}}
-            </p>
-          </div>
-        </div>
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Money}}
-            </p>
-          </div>
-        </div>
-        <div class="col">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <template v-if="card.IsClosed == 0">
-                Hoạt động <span><font-awesome-icon class="closeCard" :icon="['fa', 'backspace']" v-on:click="closeCard(card)"/></span>
-              </template>
-              <template v-else>
-                Đã đóng
-              </template>
-            </p>
-          </div>
-        </div>
-      </div>
+      </template>
+      <template v-else>
+        <h6 style="margin: auto;" class="text-center">Bạn chưa có tài khoản nào!</h6>            
+      </template>
     </div>
   </main>
 </div>

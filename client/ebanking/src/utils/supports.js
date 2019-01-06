@@ -5,12 +5,12 @@ export function checkExpireToken(){
     const decodedToken = jwtDecode(localStorage.getItem('token'));
     let lifetime = decodedToken.exp - decodedToken.iat;
     if (decodedToken) {
-    const currentTime = new Date().getTime() / 1000;
-    if (currentTime < decodedToken.exp) {
-        return true;
-    } else {
-        return false;
-    }
+        const currentTime = new Date().getTime() / 1000;
+        if (currentTime < decodedToken.exp) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }

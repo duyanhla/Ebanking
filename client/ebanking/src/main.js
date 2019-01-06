@@ -18,7 +18,8 @@ import {
   faDonate,
   faShare,
   faPhone,
-  faDollarSign
+  faDollarSign,
+  faPencilAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'; // fontawesome core
 import Vue from 'vue';
@@ -29,11 +30,14 @@ import axios from 'axios';
 import VuejsDialog from 'vuejs-dialog'; // vue dialog (modal)
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'; // include the default style
 import VueElementLoading from 'vue-element-loading' // loading
+import moment from 'moment'
 
 // using jquery as global
 global.jQuery = require('jquery');
 var $ = global.jQuery;
 window.$ = $;
+
+Vue.prototype.moment = moment;
 
 // Tell Vue to install the plugin.
 Vue.use(VuejsDialog, {
@@ -46,7 +50,7 @@ Vue.use(VuejsDialog, {
 Vue.component('vue-element-loading', VueElementLoading);
 
 // add icon fontawesome
-library.add(faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard, faDollarSign);
+library.add(faPencilAlt, faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard, faDollarSign);
 Vue.component('font-awesome-icon', FontAwesomeIcon); // set component fontawesome 
 
 Vue.config.productionTip = false;

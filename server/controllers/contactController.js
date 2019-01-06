@@ -5,7 +5,7 @@ var router = express.Router();
 
 // add new contact
 router.post('/', (req, res) => {
-    cardRepo.load(req.body.CardId).then(card => {
+    cardRepo.loadCardUser(req.body.CardId).then(card => {
         if (card.length == 0) {
             res.statusCode = 404;
             res.json({'msg': 'Not Found Card'});   
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
             contactRepo.checkContactExistInUser(uid, card[0].Id).then(contact => {
                 if (contact.length == 0) {
                     if (req.body.Name == '') {
-                        req.body.Name = req.token_payload.user.Name;
+                        req.body.Name = card[0].Name;
                     }
                     req.body.UserId = uid;
                     contactRepo.addContact(req.body).then(insertId => {
@@ -36,6 +36,38 @@ router.post('/', (req, res) => {
                 res.statusCode = 500;
                 res.end();
             })
+        }
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    });
+});
+
+// edit contact
+router.post('/edit', (req, res) => {
+    cardRepo.loadCardUser(req.body.CardId).then(card => {
+        if (card.length == 0) {
+            res.statusCode = 404;
+            res.json({'msg': 'Not Found Card'});   
+        } else {
+            var uid = req.token_payload.user.Id;
+            if (req.body.UserId != uid) {
+                res.statusCode = 401;
+                res.json({'msg': 'Unauthorized'});   
+            } else {
+                if (req.body.Name == '') {
+                    req.body.Name = card[0].Name;
+                }
+                contactRepo.updateContact(req.body.Id, req.body.CardId, req.body.Name).then(contact => {
+                    res.statusCode = 201;
+                    res.json(req.body);
+                }).catch(err => {
+                    console.log(err);
+                    res.statusCode = 500;
+                    res.end();
+                })
+            }
         }
     }).catch(err => {
         console.log(err);

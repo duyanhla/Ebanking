@@ -197,7 +197,7 @@ export default {
   methods: {
     fetchCard() {
       this.cards = [];
-      api.getCard().then(res => {
+      api.getOpenCard().then(res => {
         this.cards = res.data;
       }).catch(err => {
         console.log(err);
@@ -231,6 +231,10 @@ export default {
           this.loadingForm = false;
           this.receiverName = '';
           console.log(err);
+          this.$dialog.alert('Số tài khoản không hợp lệ hoặc không còn hoạt động!').then(function(dialog) { 
+            console.log('success');
+          }); 
+          this.desCardId = '';
         })
       } else {
         this.receiverName = '';
@@ -302,12 +306,13 @@ export default {
         this.err = `Số tiền giao dịch phải là bội số của ${opt.TRANSFER.mul}`;
         return true;
       }
-      if (this.sourceCard.Money < this.transMoney) {
+      if (this.sourceCard.Money < +this.transMoney) {
+        console.log('a')
         this.err = `Số dư không đủ để thực hiện giao dịch`;
         return true;
       }
-      if (this.feeReceiver == false) {
-        if (this.sourceCard.Money < this.transMoney + this.fee) {
+      if (this.feeReceiver == 'false') {
+        if (this.sourceCard.Money < +this.transMoney + this.fee) {
           this.err = `Số dư không đủ để thực hiện giao dịch`;
           return true;
         }
@@ -323,7 +328,7 @@ export default {
       if (this.sourceCard == null || this.receiverName == '') {
         return 0;
       } else {
-        var res = this.transMoney*opt.TRANSFER.fee/100;
+        var res = +this.transMoney*opt.TRANSFER.fee/100;
         if (res < opt.TRANSFER.minFee) {
           res = opt.TRANSFER.minFee;
         } else if (res > opt.TRANSFER.maxFee) {

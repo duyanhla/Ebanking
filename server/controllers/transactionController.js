@@ -11,15 +11,13 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "minhanpro123@gmail.com",
-        pass: "anhyeuem1997?"
+        pass: "anhyeuem1997?214097#"
     }
 });
  
 router.post('/confirm', (req, res) => {
     var fee = +req.body.fee;
     var feeReceiver = req.body.feeReceiver;
-    console.log(feeReceiver);
-    console.log(typeof(feeReceiver));
     var transId = req.body.transId;
     transRepo.single(transId).then(trans => {
         var srcCardId = trans[0].SrcCardId;
@@ -29,14 +27,15 @@ router.post('/confirm', (req, res) => {
         Promise.all([srcCard, desCard]).then(([src, des]) => {
             src[0].Money = src[0].Money - trans[0].Money;
             des[0].Money = des[0].Money + trans[0].Money;
-            if (feeReceiver) {
-                des[0].Money = des[0].Money - fee;
-            } else {
+            if (feeReceiver == 'false') {
                 src[0].Money = src[0].Money - fee;
+            } else {
+                des[0].Money = des[0].Money - fee;
             }
             var updateSrc = cardRepo.updateMoney(src[0].Id, src[0].Money);
             var updateDes = cardRepo.updateMoney(des[0].Id, des[0].Money);
-            Promise.all([updateSrc, updateDes]).then(([idSrc, idDes]) => {
+            var updateTrans = transRepo.confirmTrans(trans[0].Id);
+            Promise.all([updateSrc, updateDes, updateTrans]).then(([idSrc, idDes, idTrans]) => {
                 res.json({
                     msg: 'success'
                 });

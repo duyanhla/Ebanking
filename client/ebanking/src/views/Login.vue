@@ -6,23 +6,23 @@
         <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
           <!-- Edit Personal Info -->
           <div class="widget personal-info">
-            <h3 class="widget-header user">Login</h3>
+            <h3 class="widget-header user">Đăng Nhập</h3>
             <form action="#">
               <!-- Username -->
               <div class="form-group">
-                  <label for="username">Username</label>
+                  <label for="username">Tài khoản</label>
                   <input type="text" class="form-control" v-model="Username" id="username" autofocus required>
               </div>
               <!-- Password -->
               <div class="form-group">
-                  <label for="password">Password</label>
+                  <label for="password">Mật khẩu</label>
                   <input type="password" class="form-control" v-model="Password" id="password" required>
               </div>
               <p class="text-danger text-left" v-if="Error">Tài khoản hoặc mật khẩu không đúng</p>
               <div class="g-recaptcha" :data-sitekey="rcapt_sig_key"></div>
               <p class="text-danger text-left" v-if="errCaptcha">Vui lòng xác nhận captcha</p>
               <!-- Submit button -->
-              <button class="btn btn-transparent" @click="handleSubmit">Login</button>
+              <button type="button" class="btn btn-outline-primary btn-lg btn-block" @click="handleSubmit">Đăng nhập</button>
             </form>
           </div>
         </div>

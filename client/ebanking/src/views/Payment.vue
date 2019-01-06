@@ -10,93 +10,45 @@
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
       <h6 class="mb-0">Tài khoản thanh toán</h6>
-        <button type="button" style="padding: .375rem .75rem;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#addCardModal">
-            Tạo tài khoản thanh toán
-        </button>
-      <div class="row">
-        <div class="col-6 col-md-3">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Số tài khoản</strong>
-            </p>
-          </div>
+      <button type="button" style="padding: .375rem .75rem;" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#addCardModal">
+        Tạo tài khoản thanh toán
+      </button>
+      <template v-if="cards.length">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Số tài khoản</th>
+                <th scope="col">Tài khoản</th>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Số dư (VND)</th>
+                <th scope="col">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr :class="{ 'table-info' : index % 2 == 0, 'table-light': index % 2 == 1}" v-for="(card, index) in cards" :key="card.Id">
+                <td>{{card.Id}}</td>
+                <td>{{card.Username}}</td>
+                <td>{{card.Name}}</td> 
+                <td>{{card.Money}}</td> 
+                <td>
+                  <template v-if="card.IsClosed == 0">
+                    Hoạt động
+                  </template>
+                  <template v-else>
+                    Đã đóng
+                  </template></td> 
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Tài khoản</strong>
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Họ tên</strong>
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Số dư (VND)</strong>
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <strong class="d-block">Trạng thái</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- loop through cards -->
-      <div v-for="card in cards" :key="card.Id" class="row">
-        <div class="col-6 col-md-3">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Id}}
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Username}}
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Name}}
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              {{card.Money}}
-            </p>
-          </div>
-        </div>
-        <div class="col-6 col-md-2">
-          <div class="media text-muted pt-3">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-              <template v-if="card.IsClosed == 0">
-                Hoạt động
-              </template>
-              <template v-else>
-                Đã đóng
-              </template>
-            </p>
-          </div>
-        </div>
-      </div>
+      </template>
+      <template v-else>
+        <h6 style="margin: auto;" class="text-center">Hiện tại chưa có bất kì tài khoản thanh toán nào!</h6>            
+      </template>
     </div>
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
-        <!-- Modal -->
-        <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,7 +73,6 @@
                 </form>
             </div>
         </div>
-        </div>
     </div>
   </main>
 </div>
@@ -132,7 +83,6 @@ var api = require('../utils/api.js');
 import datePicker from 'vue-bootstrap-datetimepicker'; // datepicker
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'; // Import date picker css
 import VueElementLoading from 'vue-element-loading'
-import moment from 'moment';
 require('@/assets/js/index.js');
 
 export default {

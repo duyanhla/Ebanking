@@ -46,7 +46,7 @@ exports.allUser = () => {
 
 exports.receiver = cardId => 
 {
-    var sql = `select Name,Phone,Email from users inner join cards on users.Id = cards.UserId where cards.Id = '${cardId}'`; 
+    var sql = `select Name,Phone,Email from users inner join cards on users.Id = cards.UserId where cards.Id = '${cardId}' and cards.IsClosed = 0`; 
     return db.load(sql);
 };
 

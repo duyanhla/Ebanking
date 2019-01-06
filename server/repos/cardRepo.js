@@ -27,6 +27,16 @@ exports.cardByUser = userId => {
     return db.load(sql);
 };
 
+exports.openCardByUser = userId => {
+    var sql = `select * from cards where UserId = '${userId}' and IsClosed = 0`;
+    return db.load(sql);
+};
+
+exports.loadCardUser = id => {
+    var sql = `select c.*, u.Name from cards c join users u on c.UserId = u.Id where c.Id = '${id}'`;
+    return db.load(sql);
+}
+
 exports.loadAllUser = () => {
     var sql = `select c.Id, c.Money, u.Username, u.Name, c.IsClosed from cards c, users u where c.UserId = u.Id`;
     return db.load(sql);

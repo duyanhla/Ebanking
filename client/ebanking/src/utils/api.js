@@ -15,33 +15,32 @@ export function getAllCard() {
     });  
 };
 
-// get card
+// get all card
 export function getCard() {
-    // if (!supports.checkExpireToken()) {
-    //     console.log('renew');
-    //     store.dispatch('renew_token');
-    //     return new Promise((resolve, reject) => {
-    //         axios({
-    //             url: '${api_path}/card/me',
-    //             method: 'GET'
-    //         }).then(res => {
-    //             resolve(res);
-    //         }).catch(err => {
-    //             reject(err);
-    //         });
-    //     });
-    // } else {
-        return new Promise((resolve, reject) => {
-            axios({
-                url: `${api_path}/card/me`,
-                method: 'GET'
-            }).then(res => {
-                resolve(res);
-            }).catch(err => {
-                reject(err);
-            });
-        });  
-    // }
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/card/me`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// get open card
+export function getOpenCard() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/card/me/open`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
 };
 
 // get card by admin
@@ -171,6 +170,22 @@ export function deleteContact(contact) {
             url: `${api_path}/contact`,
             data: contact,
             method: 'DELETE'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+// edit contact
+export function editContact(contact) {
+    console.log(contact)
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/contact/edit`,
+            data: contact,
+            method: 'POST'
         }).then(res => {
             resolve(res);
         }).catch(err => {

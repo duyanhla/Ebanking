@@ -5,6 +5,11 @@ exports.addContact = contact => {
     return db.insert(sql);
 };
 
+exports.updateContact = (id, cardId, name) => {
+    var sql = `update listReceived set CardId = '${cardId}', Name = '${name}' where Id = '${id}'`;
+    return db.insert(sql);
+};
+
 exports.getContactById = userId => {
     var sql = `select * from listReceived where UserId = '${userId}'`;
     return db.load(sql);

@@ -113,6 +113,19 @@ router.get('/me', (req, res) => {
     });
 });
 
+// get all open card
+router.get('/me/open', (req, res) => {
+    var uid = req.token_payload.user.Id;
+    cardRepo.openCardByUser(uid).then(cards => {
+        res.statusCode = 200;
+        res.json(cards);
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end();
+    });
+});
+
 // get all card, user
 router.get('/all', (req, res) => {
     var per = req.token_payload.user.Permission;

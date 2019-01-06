@@ -14,6 +14,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 import FooterBottom from "@/components/FooterBottom.vue";
+var supports = require('./utils/supports.js');
 
 export default {
   name: "app",
@@ -23,20 +24,24 @@ export default {
     FooterBottom
   },
   // created: function () {
-    // this.$http.interceptors.request.use((config) => {
-    //   let originalRequest = config;
-    //   if (supports.checkExpireToken() === false && config.url.indexOf("captcha") == -1) {
-    //     console.log('a')
-    //     return store.dispatch("renew_token").then((token) => {
-    //       console.log(token);
-    //       return Promise.resolve(originalRequest);
-    //     });
-    //   }
-    //   return config;
-    // }, (err) => {
-    //   console.log(err)
-    //   return Promise.reject(err);
-    // });
+  //   this.$http.interceptors.request.use(config => {
+  //     let originalRequest = config;
+  //     console.log(supports.checkExpireToken())
+  //     if (window.location.pathname.indexOf('/login') == -1) {
+  //       console.log('a')
+  //       return config;
+  //     }
+  //     else {
+  //       if (supports.checkExpireToken() == false) {
+  //         console.log('c')
+  //         this.$router.push('login');
+  //       }
+  //     }
+  //     return config;
+  //   }, (err) => {
+  //     console.log(err)
+  //     return Promise.reject(err);
+  //   });
   // }
 };
 </script>
