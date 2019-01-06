@@ -239,11 +239,11 @@ export function verifyOTP(otp, transId) {
 };
 
 // confirmm transaction
-export function confirmTrans(transId, fee, feeReceiver) {
+export function confirmTrans(transId, fee, feeReceiver,addContact) {
     return new Promise((resolve, reject) => {
         axios({
             url: `${api_path}/transaction/confirm`,
-            data: {fee: fee, transId: transId, feeReceiver: feeReceiver},
+            data: {fee: fee, transId: transId, feeReceiver: feeReceiver,addContact: addContact},
             method: 'POST'
         }).then(res => {
             resolve(res);

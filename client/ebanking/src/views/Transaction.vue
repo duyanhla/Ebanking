@@ -53,12 +53,13 @@
           <div class="form-group col-md-6">
             <label for="inputCity">Tên người nhận</label>
             <input type="text" class="form-control" id="inputCity" readonly v-model="receiverName">
+            <input type="checkbox"  id="contactCheck" v-modal="addcontactoption"> Thêm liên hệ 
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="transMoney">Số tiền chuyển (VND)</label>
-            <input type="number" max="10000000" class="form-control" id="transMoney" v-model="transMoney">
+            <input type="number" max="10000000" class="form-control" id="transMoney" v-model="transMoney" step="10000" >
           </div>
           <div class="form-group col-md-6">
             <label for="messages">Nội dung</label>
@@ -189,6 +190,7 @@ export default {
       otp: '',
       transId: 0,
       err: '',
+      addcontactoption: false
     }
   },
    components: {
@@ -242,7 +244,7 @@ export default {
     },
     confirmOTP() {
       api.verifyOTP(this.otp, this.transId).then(res => {
-        api.confirmTrans(this.transId, this.fee, this.feeReceiver).then(response => {
+        api.confirmTrans(this.transId, this.fee, this.feeReceiver,this.addcontactoption).then(response => {
           this.desCardId = '';
           this.sourceCard = null;
           this.receiverName = '';
@@ -257,6 +259,7 @@ export default {
             console.log('success');
           });
           this.fetchCard();
+          this.fetchContact();
         })
       }).catch(err => {
         this.$dialog.alert('OTP không hợp lệ hoặc hết hạn!').then(function(dialog) {
