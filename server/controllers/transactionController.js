@@ -12,8 +12,8 @@ var router = express.Router();
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-        user: "minhanpro123@gmail.com",
-        pass: "anhyeuem1997?214097#"
+        user: "fastpay.org@gmail.com",
+        pass: "fastpay123"
     }
 });
  
