@@ -11,6 +11,9 @@ import Contact from './views/Contact.vue';
 import Transaction from './views/Transaction.vue';
 import Payment from './views/Payment.vue';
 import Recharge from './views/Recharge.vue';
+import Notify from './views/Notify.vue';
+import Notifies from './views/Notifies.vue';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -97,6 +100,26 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Nạp tiền',
+        isAdmin: true
+      }
+    },
+    {
+      path: '/notify',
+      name: 'notify',
+      component: Notify,
+      meta: {
+        requiresAuth: true,
+        title: 'Thông báo',
+        isAdmin: true
+      }
+    },
+    {
+      path: '/notifies',
+      name: 'notifies',
+      component: Notifies,
+      meta: {
+        requiresAuth: true,
+        title: 'Danh sách thông báo',
         isAdmin: true
       }
     },

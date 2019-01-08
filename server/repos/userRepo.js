@@ -54,3 +54,18 @@ exports.getUserId = userName => {
     var sql = `select * from users where Username = '${userName}'`;
     return db.load(sql);
 }
+
+exports.getEmailSubcriber = () => {
+    var sql = `select Email from users where Permission = 0 and isSubcribe = 1`;
+    return db.load(sql);
+}
+
+exports.subcribe = (uid) => {
+    var sql = `update users set isSubcribe = 1 where Id = ${uid}`;
+    return db.insert(sql);
+}
+
+exports.unsubcribe = (uid) => {
+    var sql = `update users set isSubcribe = 0 where Id = ${uid}`;
+    return db.insert(sql);
+}

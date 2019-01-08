@@ -49,6 +49,16 @@
                           <router-link to="/recharge" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'dollar-sign']" /></span> Nạp tiền</router-link>
                         </div>
                       </li>
+                      <li class="nav-item dropdown dropdown-slide">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span><font-awesome-icon :icon="['fa', 'bell']" /></span> Thông báo <span><font-awesome-icon :icon="['fa', 'angle-down']" /></span>
+                        </a>
+                        <!-- Dropdown list -->
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <router-link to="/notify" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'envelope']" /></span> Gửi thông báo</router-link>
+                          <router-link to="/notifies" class="dropdown-item"><span><font-awesome-icon :icon="['fa', 'clipboard-list']" /></span> Danh sách thông báo</router-link>
+                        </div>
+                      </li>
                     </template>
                   </template>
                   <template v-else>
@@ -67,8 +77,16 @@
                         <span><font-awesome-icon :icon="['fa', 'user-circle']" /></span> {{user.Name}}
                       </a>
                       <!-- Dropdown list -->
-                      <div class="dropdown-menu dropdown-menu-right">
-                         <a class="dropdown-item" id="needPointer" @click="logout">Đăng xuất</a>
+                      <div :key="rerender" class="dropdown-menu dropdown-menu-right">
+                        <a v-if="user.Permission == 0 && user.isSubcribe == 1" @click="unsubcribe" class="dropdown-item needPointer">
+                          <span><font-awesome-icon :icon="['fa', 'check-square']" /></span> Nhận thông báo
+                        </a>
+                        <a v-if="user.Permission == 0 && user.isSubcribe == 0" @click="subcribe" class="dropdown-item needPointer">
+                          <span><font-awesome-icon :icon="['fa', 'square']" /></span> Không nhận thông báo
+                        </a>
+                        <a class="dropdown-item needPointer" @click="logout">
+                          <span><font-awesome-icon :icon="['fa', 'sign-out-alt']" /></span> Đăng xuất
+                        </a>
                       </div>
                     </li>
                   </template>
@@ -86,15 +104,16 @@
     </section>
 </template>
 
-<style>
-  #needPointer{
-    cursor: pointer;
-  }
-</style>
 
 <script>
+var api = require("../utils/api.js");
 export default {
   name: 'Navbar',
+  data () {
+    return {
+      rerender: 0,
+    }
+  },
   computed: {
     // get isLoggedIn from store.js (Vuex)
     isLoggedIn: function() {
@@ -111,7 +130,41 @@ export default {
       this.$store.dispatch('logout').then(() => {
         this.$router.push('/');
       });
+    },
+    // subcribe
+    subcribe: function() {
+      api.subcribe().then(res => {
+        this.user.isSubcribe = 1;
+        this.rerender++;
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    // unsubcribe
+    unsubcribe: function() {
+      api.unsubcribe().then(res => {
+        this.user.isSubcribe = 0;
+        this.rerender++;
+      }).catch(err => {
+        console.log(err);
+      })
     }
   }
 };
 </script>
+
+<style>
+  .needPointer{
+    cursor: pointer;
+  }
+
+  .outerDivFull { margin-left:0px; } 
+  .switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
+  .switchToggle label {cursor: pointer; text-indent: -9999px; width: 60px; max-width: 60px; height: 20px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
+  .switchToggle label:after {content: ''; position: absolute; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 90px; transition: 0.3s; }
+  .switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #3e98d3; }
+  .switchToggle input + label:before, .switchToggle input + input + label:before {content: 'Tắt'; position: absolute; left: 30px; width: 20px; height: 20px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+  .switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Bật'; position: absolute; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+  .switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
+  .switchToggle label:active:after {width: 10px; } 
+</style>

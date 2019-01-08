@@ -1,8 +1,13 @@
 import 'bootstrap'; // bootstrap-core
 import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap css
-import { library } from '@fortawesome/fontawesome-svg-core';// fontawesome
+import {
+  library
+} from '@fortawesome/fontawesome-svg-core'; // fontawesome
 // icon
 import {
+  faSignOutAlt,
+  faEnvelope,
+  faBell,
   faAngleUp,
   faAngleDown,
   faBars,
@@ -19,9 +24,14 @@ import {
   faShare,
   faPhone,
   faDollarSign,
-  faPencilAlt
+  faPencilAlt,
+  faClipboardList,
+  faCheckSquare,
+  faSquare,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'; // fontawesome core
+import {
+  FontAwesomeIcon
+} from '@fortawesome/vue-fontawesome'; // fontawesome core
 import Vue from 'vue';
 import App from './App.vue'
 import router from './router'; // Vue Router
@@ -50,7 +60,7 @@ Vue.use(VuejsDialog, {
 Vue.component('vue-element-loading', VueElementLoading);
 
 // add icon fontawesome
-library.add(faPencilAlt, faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard, faDollarSign);
+library.add(faSignOutAlt, faSquare, faCheckSquare, faBell, faEnvelope, faClipboardList, faPencilAlt, faAngleUp, faTimesCircle, faBackspace, faPhone, faAngleDown, faShare, faBars, faList, faHistory, faMoneyCheckAlt, faDonate, faAddressBook, faUserCircle, faHome, faCreditCard, faDollarSign);
 Vue.component('font-awesome-icon', FontAwesomeIcon); // set component fontawesome 
 
 Vue.config.productionTip = false;

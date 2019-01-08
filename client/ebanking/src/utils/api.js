@@ -280,3 +280,56 @@ export function allTransactionsByUserId() {
         });
     });  
 };
+
+export function sendNoti(title, content) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/noti`,
+            data: {title: title, content: content},
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+export function getNotifies() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/noti`,
+            method: 'GET'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+export function subcribe() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/user/sub`,
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};
+
+export function unsubcribe() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${api_path}/user/unsub`,
+            method: 'POST'
+        }).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });  
+};

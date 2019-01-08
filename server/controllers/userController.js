@@ -164,4 +164,30 @@ router.get('/receiver', authRepo.verifyAccessToken , (req, res) => {
     })
 });
 
+router.post('/sub', [authRepo.verifyAccessToken, authRepo.verifyUser] , (req, res) => {
+    var uid = req.token_payload.user.Id;
+    userRepo.subcribe(uid).then(idUser => {
+        res.statusCode = 200;
+        res.json(idUser);
+
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    })
+});
+
+router.post('/unsub', [authRepo.verifyAccessToken, authRepo.verifyUser] , (req, res) => {
+    var uid = req.token_payload.user.Id;
+    userRepo.unsubcribe(uid).then(idUser => {
+        res.statusCode = 200;
+        res.json(idUser);
+
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console.');
+    })
+});
+
 module.exports = router;
